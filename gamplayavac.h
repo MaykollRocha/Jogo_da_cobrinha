@@ -8,9 +8,10 @@
 #define gamplayavac_h
 int paratudo(cobra *eu)
 {
-
+    //Cheka se bateu em uma das bordas
     if(eu->pos_x>100 || eu->pos_y > 10 || eu->pos_y==0 || eu->pos_x==0)return 1;
 
+    //checa se bateu nela mesma
     if(eu->restcorp)
     {
         int l = 0;
@@ -26,37 +27,43 @@ int paratudo(cobra *eu)
     return 0;
 
 }
-//setas(72, 75, 77, 80)
-void gameplay(int speed,int nivel)
-{
-        srand( (unsigned)time(NULL) );
 
-    int po;
-    int poits;
-    poits = 0;
-    cobra *eu = cria(50,5);
-    comida *c = criar_comida(rand()%100+1,rand()%10+1);
+int gameplay(int speed,int nivel)
+{
+    //Para começar com um numero aleatório plantando uma semente
+    srand( (unsigned)time(NULL) );
+
+    int po;//Posição da ceta
+    int poits;//Placar marcado
+    poits = 0;//começa em zero
+    cobra *eu = cria(50,5);//Começa no meio do jogo
+    comida *c = criar_comida(rand()%100+1,rand()%10+1);//cria a comida num espaço aleatório
+    //Gera o corpo
     gotoxy(0,0);
     campo();
 
-    eu->restcorp = cria(49,5);
+    eu->restcorp = cria(49,5);//cria um corpo de 2 espaço
+
+    //laço infinito
     while(1)
     {
+        //Apresenta os pontos
         gotoxy(0,12);
         printf("Pontos: %i", poits);
+        //Pega o final da cobra
         cobra *aux = eu;
-        while(aux->restcorp != NULL)
+        while(aux->restcorp != NULL)//vai para o ultimo rastro
             aux = aux->restcorp;
-        int ux,uy;
-        ux=aux->pos_x;
-        uy=aux->pos_y;
 
+        //Mostra a comida e a cobra em game
         mostrar_comida(c);
         mostrar(eu);
 
-        gotoxy(ux,uy);
+        //Apaga o ultimo rastro da cobra
+        gotoxy(aux->pos_x,aux->pos_y);
         printf(" ");
 
+        //Serve para não parar o codigo
         if(kbhit()){
             po = getch();
         }
@@ -68,21 +75,26 @@ void gameplay(int speed,int nivel)
             case 75: atuliza(eu,eu->pos_x-1,eu->pos_y);break;
             case 80: atuliza(eu,eu->pos_x,eu->pos_y+1);break;
             case 77: atuliza(eu,eu->pos_x+1,eu->pos_y);break;
-            default: po = getch(); break;
+            default: po = getch(); break;//Para o codigo caso não entre com uma ceta
         }
 
+
+        //Checa se pegou a comida
         if(eu->pos_x == c->pos_x && eu->pos_y == c->pos_y)
         {
+            //vai para posisão antiga dela e paga seu rastro
             gotoxy(c->pos_x,c->pos_y);
             printf(" ");
+            //Aumenta a cobra
             aumentar(eu);
             mostrar(eu);
             free(c);
+            //Limpa e gra uma nova comida
             c = criar_comida(rand()%100+1,rand()%10+1);
-            poits += 100*nivel;
+            poits += 100*nivel;//Aumenta o ponto de acordo com a dificuldade
         }
-        Sleep(speed);
-        if(paratudo(eu))break;
+        Sleep(speed);//aumenta a velocidade de acordo com a velocidade
+        if(paratudo(eu))break;//Para o jogo em caso de Game Over
     }
     //Anuncia a derrota
     gotoxy(45,4);
@@ -97,6 +109,6 @@ void gameplay(int speed,int nivel)
     limpar(eu);//limpa a cobra
 
     getch();
-    return;
+    return poits;
 }
 #endif

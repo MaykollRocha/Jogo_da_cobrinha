@@ -2,12 +2,64 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
-#include<windows.h>
+#include <windows.h>
+#include <locale.h>
 #include "cobra_prototipacao.h"
 #include "alg_auxilio.h"
 #include "cobra_criacao.h"
 #include "comida_alg.h"
 #include "gamplayavac.h"
+
+/***
+ * @author Maykoll Rocha
+ * @email <maykoll1412@gmail.com>
+ * @date  (início) 2023-07-19
+ * @date  (Ultima Atualização) 2023-07-20
+***/
+
+
+void save_records(char name[],int points)
+{
+    FILE *arq = fopen("PONTUAÇÕES.txt","a");
+    fprintf(arq,"%s\n%i\n",name,points);
+    fclose(arq);
+}
+
+void ranking()
+{
+    printf("NOME|PONTUAÇÃO\n");
+    FILE *arq = fopen("PONTUAÇÕES.txt","r");
+    if(!arq)
+    {
+        printf("Não há nada registrado\n");
+        return;
+    }
+    int p;
+    p=0;
+    arqs buff[100];
+    while(!feof(arq))
+    {
+        fscanf(arq,"%s\n",&buff[p].name);
+        fscanf(arq,"%i\n",&buff[p].pontos);
+        p++;
+    }
+
+    for(int i=0;i<p-1;i++)
+    {
+        for(int j=i+1;j<p;j++)
+        {
+            if(buff[i].pontos<buff[j].pontos)
+            {
+                arqs aux;
+                aux = buff[i];
+                buff[i] = buff[j];
+                buff[j] = aux;
+            }
+        }
+    }
+    for(int i=0;i<p;i++)
+        printf("%s|%i\n",buff[i].name,buff[i].pontos);
+}
 
 
 int opcoes()
@@ -76,17 +128,19 @@ void menu()
     speed = 300;
     lv = 1;
     ps = 0;
-    char c1,c2,c3;
+    char c1,c2,c3,c4;
     c1 = 'X';
     c2 = ' ';
     c3 = ' ';
+    c4 = ' ';
     while (1)
     {
         printf("+------------+\n"
         "|[%c] Iníciar |\n"
+        "|[%c] Ranking |\n"
         "|[%c] Opções  |\n"
         "|[%c] Sair    |\n"
-        "+------------+\n",c1,c2,c3);
+        "+------------+\n",c1,c2,c3,c4);
         do{
             po = getch();
         }while(po != 13 && po != 72 && po != 80);
@@ -102,17 +156,25 @@ void menu()
                     c1 = ' ';
                     c2 = 'X';
                     ps = 1;
-                }else{
+                }else if(ps ==1){
                     c2 = ' ';
                     c3 = 'X';
                     ps = 2;
+                }else{
+                    c3 = ' ';
+                    c4 = 'X';
+                    ps = 3;
                 }
 
                 break;
             case 72:
                 system("cls");
-                if(ps == 2)
+                if(ps == 3)
                 {
+                    c4 = ' ';
+                    c3 = 'X';
+                    ps = 2;
+                }else if(ps == 2){
                     c3 = ' ';
                     c2 = 'X';
                     ps = 1;
@@ -125,13 +187,25 @@ void menu()
             case 13:
                 switch(ps)
                 {
-                    case 0:gameplay(speed,lv);break;
+                    case 0:
+                        printf("Entre com o nome do jogador: ");
+                        char name[15];
+                        scanf("%s",&name);
+                        int ponto = gameplay(speed,lv);
+                        save_records(name,ponto);
+                        break;
                     case 1:
+                        system("cls");
+                        ranking();
+                        getch();
+                        break;
+                    case 2:
                         system("cls");
                         lv = opcoes();
                         speed = (lv == 1)?250:(lv == 2)?150:90;
                         break;
-                    case 2: return;break;
+                    case 3: return;break;
+
                 }
                 system("cls");
                 break;
@@ -141,6 +215,7 @@ void menu()
 
 int main()
 {
+    setlocale(LC_ALL,"portuguese");
     menu();
     return 0;
 }

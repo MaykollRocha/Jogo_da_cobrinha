@@ -22,6 +22,12 @@ typedef struct comida
     int pos_y;// Local Y da comida
 }comida;
 
+//estrutura para tirar arquivos
+typedef struct _arqs
+{
+    char name[255];
+    int pontos;
+}arqs;
 //Funções para cobra
 cobra *cria(int x,int y);//Iniciar uma cobra ou pedaços dela
 void aumentar(cobra *eu);// aumenta a cobra
@@ -35,7 +41,7 @@ void mostrar_comida(comida *comid);//Mostra a comida na tela
 //Gameplays
 void campo();
 int paratudo(cobra *eu);//`Verifica se deu algum problema
-void gameplay(int speed,int nivel);//Gameplay avançada
+int gameplay(int speed,int nivel);//Gameplay avançada
 
 //Menus
 int opcoes();
