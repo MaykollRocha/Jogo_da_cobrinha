@@ -27,13 +27,17 @@ void save_records(char name[],int points)
 
 void ranking()
 {
+	int i,j,k;
     printf("NOME|PONTUAÇÃO\n");
+    //Abre o arquivo em modo de leitura
     FILE *arq = fopen("PONTUAÇÕES.txt","r");
+    //Caso não tenha arquivo ele não abre logo ela consta como invalido fala que não tem nada salvo e retorn ao menu.
     if(!arq)
     {
         printf("Não há nada registrado\n");
         return;
     }
+    //Conta quantos valores tem.
     int p;
     p=0;
     arqs buff[100];
@@ -43,10 +47,28 @@ void ranking()
         fscanf(arq,"%i\n",&buff[p].pontos);
         p++;
     }
+    fclose(arq);//Depois de tirar tudo do arquivo ele fecha.
+    //Salva o número de registro que tinha no arquivo
+	int n=p;
 
-    for(int i=0;i<p-1;i++)
+	//Cheka qual nomes estão repetidos nos codigo.
+    for( i=0;i<p-1;i++)
+        for( j=i+1;j<p;j++)
+            if(strcmp(buff[i].name,buff[j].name)==0)
+            {
+                if(buff[i].pontos < buff[j].pontos)buff[i].pontos = buff[j].pontos;
+                for( k=j;k<p-1;k++)
+                {
+                    buff[k] = buff[k+1];
+                }
+                p-=1;
+            }
+
+    //Nosso amado algoritmo da bolha para ordenar em ordem crescente de pontuação nosso arquivo
+	//OBS: eu fiz algo bom não otimizado.
+    for(i=0;i<p-1;i++)
     {
-        for(int j=i+1;j<p;j++)
+        for(j=i+1;j<p;j++)
         {
             if(buff[i].pontos<buff[j].pontos)
             {
@@ -57,8 +79,20 @@ void ranking()
             }
         }
     }
-    for(int i=0;i<p;i++)
+
+
+    //Printa depois de ordenado o ranking
+    for(i=0;i<p;i++)
         printf("%s|%i\n",buff[i].name,buff[i].pontos);
+
+    //Caso tenha tido algo repetido arrumamos isso para que não ocorrar um aumento linear desnessesário no arquivo .
+    if(n!=p)
+    {
+        FILE *arq = fopen("PONTUAÇÕES.txt","w");
+        for(int i=0;i<p;i++)
+            fprintf(arq,"%s\n%i\n",buff[i].name,buff[i].pontos);
+        fclose(arq);
+    }
 }
 
 

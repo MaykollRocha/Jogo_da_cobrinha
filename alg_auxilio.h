@@ -18,23 +18,24 @@ void gotoxy(int x, int y){
 
 void campo()
 {
+	int i,j;
     //Campo 100X10
     //Cria a aste superior
     printf("+");
-    for(int i = 0;i<100;i++)printf("-");
+    for(i = 0;i<100;i++)printf("-");
     printf("+\n");
 
     //Faz o meio
-    for(int j=0;j<10;j++)
+    for(j=0;j<10;j++)
     {
         printf("|");
-        for(int  i = 0;i<100;i++)printf(" ");
+        for(i = 0;i<100;i++)printf(" ");
         printf("|\n");
     }
 
     //Faz as bosdas
     printf("+");
-    for(int i = 0;i<100;i++)printf("-");
+    for(i = 0;i<100;i++)printf("-");
     printf("+");
 }
 
