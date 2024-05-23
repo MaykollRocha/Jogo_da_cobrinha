@@ -1,0 +1,15 @@
+{"titulo": """Jogo da cobrinha""",
+    "info": {
+        "materia": "hobby",
+        "data": "31 de Julho de 2023",
+        "local": "Dourados-MS",
+        "professor": "0",
+        "nota": "0",
+    },
+    "descricao": """A ideia principal do projeto é desenvolver um jogo da cobrinha utilizando uma lista encadeada. Nele, você usa as setas do teclado para mover a cobra, que se desloca de forma contínua. O projeto faz uso intensivo de ponteiros para controlar o movimento da cobra no mapa. À medida que a cobra se move, os ponteiros ajustam sua posição e o último segmento da cobra é atualizado de acordo.  
+            Além disso, o jogo pinta o pixel onde a cobra está localizada e utiliza uma matriz para representar o espaço de jogo, permitindo que a cobra se mova dentro dela. A lista encadeada é utilizada para gerenciar o crescimento da cobra conforme ela coleta itens, permitindo a adição de novos segmentos ao corpo da cobra. O projeto também inclui a funcionalidade de salvar a pontuação em um arquivo .txt, registrando os pontos acumulados pelo jogador.""",
+    "imag": None,
+    "codigos": None,
+    "agregamento": """Minha experiência ao desenvolver esse projeto foi extremamente agradável. Gostei de cada minuto, pois estava totalmente confiante de que a ideia funcionaria. Logicamente, não é fácil criar algo que simule gráficos em C, mas à medida que o projeto avançava, tudo se tornava cada vez mais real e satisfatório. No final das contas, o resultado foi muito bom e recompensador.""",
+    "Link": """https://github.com/MaykollRocha/Jogo_da_cobrinha""",
+    }
